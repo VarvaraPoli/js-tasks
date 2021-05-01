@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<meta charset='UTF-8'>
+<head>
+</head>
+<body>
+<div>hello, world!</div>
+ <script>
+ 'use strict';
+ 
+//РЕАЛИЗАЦИЯ МЕТОДА .map()
+Array.prototype.map = function(callback){
+  let arrayFinal = [];
+  for(let i=0; i<this.length;i++){
+    arrayFinal.push(callback(this[i]));
+ }
+ return arrayFinal;
+}
+
+
+//РЕАЛИЗАЦИЯ ФУНКЦИИ map 2:
+/*let map = function(arr, callback, thisArg) {
+  let  results = [];
+  for (let i = 0; i < arr.length; i++) {
+    results.push(callback.call(thisArg, arr[i], i, arr));
+  }
+  return results;
+};*/
+//console.log([1,2,3].map(function(x) { return x + 1; }));
+//JSON.stringify([1,2,3].map(function(x) { return x + 1; })) === '[2,3,4]';
+ 
+ 
+ 
+//РЕАЛИЗАЙИЯ МЕТОДА .filter()
+Array.prototype.filter = function(callback) {
+  let arrayFinal = [];
+  for(let i=0; i<this.length; i++){
+    if(callback(this[i])){
+      arrayFinal.push(this[i]);
+    }
+  }
+  return arrayFinal;
+};
+//console.log([1,2,3].filter(function(x) { return x > 2}));
+// JSON.stringify([1,2,3].filter(function(x) { return x > 2})) === "[3]"
+
+
+//РЕАЛИЗАЦИЯ МЕТОДА .reduce;
+Array.prototype.reduce = function(combiner, initialValue) {
+  let arrayFinal =[];
+  if(initialValue){ 
+    this.push(initialValue);
+  } 
+  let finaly;
+  let memory=this[0];
+  for(let i=0; i<this.length-1; i++){
+    finaly= combiner(memory,this[i+1]);
+    memory=finaly;
+  }
+  arrayFinal.push(finaly);
+  return arrayFinal;
+}
+//console.log( [1,2,3].reduce(function(memo, item) { return memo + item; }));
+//console.log( [1,2,3].reduce(function(memo, item) { return memo + item; },10));
+// [1,2,3].reduce(function(memo, item) { return memo + item; }); === [6];
+// [1,2,3].reduce(function(memo, item) { return memo + item; }, 10); === [16]
+
+
+
+//Переделайте массив так, чтобы объекты были следующего вида { id: …, title: … }. Использовать функцию map:
+/*var newReleases = [{
+	"id": 70111470,
+	"title": "Die Hard",
+	"boxart": "http://cdn-0.nflximg.com/images/2891/DieHard.jpg",
+	"uri": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": [4.0],
+	"bookmark": []
+}, {
+	"id": 654356453,
+	"title": "Bad Boys",
+	"boxart": "http://cdn-0.nflximg.com/images/2891/BadBoys.jpg",
+	"uri": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": [5.0],
+	"bookmark": [{ id: 432534, time: 65876586 }]
+}, {
+	"id": 65432445,
+	"title": "The Chamber",
+	"boxart": "http://cdn-0.nflximg.com/images/2891/TheChamber.jpg",
+	"uri": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": [4.0],
+	"bookmark": []
+}, {
+	"id": 675465,
+	"title": "Fracture",
+	"boxart": "http://cdn-0.nflximg.com/images/2891/Fracture.jpg",
+	"uri": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": [5.0],
+	"bookmark": [{ id: 432534, time: 65876586 }]
+}];
+
+
+// Решение
+/*
+console.log(newReleases.map(function(x){ 
+  let objectNew={};
+  objectNew.id = x.id;
+  objectNew.title = x.title;
+  return objectNew;
+ }));
+*/
+
+
+//Выведите массив ids для видео у которых рейтинг 5.0. В качестве входных данных используйте newReleases из предыдущих заданий.
+/*
+let ids=[];
+newReleases.filter(function(x){
+  if(x.rating == 5.0){ 
+    ids.push(x.id);
+  }
+});
+console.log(ids);*/
+// [675465, …]
+
+
+
+//Привести данные к указанному виду, boxarts преобразовать в boxart где значение это ссылка на видео размером 150х200.
+let movieLists = [
+ {
+  name: "Instant Queue",
+  videos: [{
+	"id": 70111470,
+	"title": "Die Hard",
+	"boxarts": [{
+		width: 150,
+		height: 200, url: "http://cdn-0.nflximg.com/images/2891/DieHard150.jpg"
+		}, {
+		width: 200,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/DieHard200.jpg"
+	   }],
+	"url": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": 4.0,
+	"bookmark": []
+	},
+	{
+	"id": 654356453,
+	"title": "Bad Boys",
+	"boxarts": [{
+		width: 200,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/BadBoys200.jpg"
+	    }, {
+		width: 150,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/BadBoys150.jpg"
+	}],
+	"url": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": 5.0,
+	"bookmark": [{ id: 432534, time: 65876586 }]
+	}]
+ }, 
+ {
+	name: "New Releases",
+	videos: [{
+	  "id": 65432445,
+	  "title": "The Chamber",
+	  "boxarts": [{
+		  width: 150,
+		  height: 200,
+		  url: "http://cdn-0.nflximg.com/images/2891/TheChamber150.jpg"
+		  }, {
+		  width: 200,
+		  height: 200,
+		  url: "http://cdn-0.nflximg.com/images/2891/TheChamber200.jpg"
+      }],
+	  "url": "http://api.netflix.com/catalog/titles/movies/70111470",
+	  "rating": 4.0,
+	  "bookmark": []
+	}, {
+	"id": 675465,
+	"title": "Fracture",
+	"boxarts": [{
+		width: 200,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/Fracture200.jpg"
+		}, {
+		width: 150,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/Fracture150.jpg"
+		}, {
+		width: 300,
+		height: 200,
+		url: "http://cdn-0.nflximg.com/images/2891/Fracture300.jpg"
+		}],
+	"url": "http://api.netflix.com/catalog/titles/movies/70111470",
+	"rating": 5.0,
+	"bookmark": [{ id: 432534, time: 65876586 }]
+	}]
+ }
+];
+
+//используя ТОЛЬКО метод .filter;
+let array=[];
+let object={};
+let boxars;
+/*
+for(let i=0; i<movieLists.length; i++){
+  let video = movieLists[i].videos;
+  for(let j=0; j<video.length; j++){
+   let box = video[j].boxarts;
+    box.filter(function(x){
+     if(x.width==150 && x.height==200){
+	  object.id = video[j].id;
+	  object.title = video[j].title;
+      object.boxars = x.url;
+	    return array.push(object);
+	  }
+    });     
+  }
+}
+console.log(array);*/
+// ожидаемый результат
+// [
+// {"id": 70111470,"title": "Die Hard","boxart":"http://cdn-0.nflximg.com/images/2891/DieHard150.jpg" }
+// {"id": 654356453,"title": "Bad Boys","boxart":"http://cdn-0.nflximg.com/images/2891/BadBoys150.jpg" },
+// {"id": 65432445,"title": "The Chamber","boxart":"http://cdn-0.nflximg.com/images/2891/TheChamber150.jpg" },
+// {"id": 675465,"title": "Fracture","boxart":"http://cdn-0.nflximg.com/images/2891/Fracture150.jpg" },
+// ];
+
+
+
+
+//С помощью функции reduce получить максимальное значение в массиве
+/*
+let ratings = [2,3,1,4,5,0,7,1];
+let max;*/
+   //максимальное через цикл
+ /*
+for(let s=0; s<ratings.length-1;s++){
+  if(ratings[s]<ratings[s+1] || max<ratings[s+1]){
+    max=ratings[s+1];
+  }
+}
+*/
+ // console.log(max);
+ //максимальное через reduce;
+// то же самое ---> return i<j ? j : i; Ибо условие проверяется в цикле в callback, а return по окончанию цикла в callback. 
+/*
+console.log(ratings.reduce(function(i,j){
+  if(i<j){
+    return j;
+  }else{
+    return i;
+  }
+}));
+ */
+ 
+//ж) С помощью функций map, reduce, вывести url у которого самая большая площадь
+let boxarts = [{
+	width: 200,
+	height: 200,
+	url: "http://cdn-0.nflximg.com/images/2891/Fracture200.jpg"
+	}, {
+	width: 150,
+	height: 200,
+	url: "http://cdn-0.nflximg.com/images/2891/Fracture150.jpg"
+	}, {
+	width: 300,
+	height: 200,
+	url: "http://cdn-0.nflximg.com/images/2891/Fracture300.jpg"
+	}, {
+	width: 425,
+	height: 150,
+	url: "http://cdn-0.nflximg.com/images/2891/Fracture425.jpg"
+}];
+
+let arrayNew=[];
+ 
+let newArray =  boxarts.map(function(x){
+   return  (x.width*x.height);
+}).reduce(function(i,j){ 
+    return (i<j ? j :i);
+});
+
+let resultUrl;
+ 
+for(let i=0; i<boxarts.length;i++){
+  let s =boxarts[i].width* boxarts[i].height;
+  if(newArray== s){
+   resultUrl = boxarts[i].url;
+  }
+ }
+console.log(resultUrl);
+ </script>
+</body>
+</html>
