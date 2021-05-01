@@ -1,5 +1,6 @@
 # js-tasks
-## Js tasks for training
+## Js tasks for training 
+(After reading Nick Morgan's book 'JavaScript for Kids'.)
 
 1. Implementation of method and function map();
 2. Implementation of method filter();
